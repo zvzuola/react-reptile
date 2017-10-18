@@ -1,33 +1,29 @@
 'use strict';
 
-var fs = require('fs');
-var argv = require('yargs').argv;
-var PORT = argv.p || 8039;
-
-
-// 兼容服务端加载html文件
-
-
-require.extensions['.html'] = function (module, filename) {
-  module.exports = fs.readFileSync(filename, 'utf8');
-};
-
-var router = require('./router/index');
-var ejs = require('koa-ejs');
-var path = require('path');
-var http = require('http');
-var koa = require('koa');
-var mount = require('koa-mount');
-var koaBody = require('koa-body');
-var app = koa();
-var appStatic = koa();
+const fs = require('fs');
+const argv = require('yargs').argv;
+const router = require('./router/index');
+const ejs = require('koa-ejs');
+const path = require('path');
+const http = require('http');
+const koa = require('koa');
+const mount = require('koa-mount');
+const koaBody = require('koa-body');
+const koaStatic = require('koa-static');
+const app = new koa();
+const appStatic = new koa();
+const PORT = argv.p || 8039;
 
 app.use(koaBody());
-appStatic.use(require('koa-static')(path.join(__dirname, '../../public'), {
+
+appStatic.use(koaStatic(path.join(__dirname, '../../public'), {
   maxage: 0
 }));
-
 app.use(mount('/', appStatic))
+// 静态资源加载，为什么要采用上面那种mount方式？
+// app.use(koaStatic(path.join(__dirname, '../../public'), {
+//   maxage: 0
+// }));
 
 process.title = '';
 
@@ -40,7 +36,7 @@ ejs(app, {
 });
 
 app.use(router.routes())
-    .use((router.allowedMethods()));
+  .use((router.allowedMethods()));
 
 //@FIXIT
 app.on('error', function (err) {

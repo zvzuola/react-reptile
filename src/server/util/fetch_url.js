@@ -1,20 +1,34 @@
 let request = require('request');
 let cheerio = require('cheerio');
-let path = require('path');
+let URL = require('url');
 
-module.exports = (url) => {
+module.exports = (item) => {
+  let url = item.url;
   return new Promise((resolve, reject) => {
     request(url, (err, res, body) => {
       if (err) reject(err);
       let $ = cheerio.load(body);
-      let juejin = [];
-      $('a.title').each(function () {
-        juejin.push({
+      let myUrl = new URL.URL(url);
+      let list = [];
+      let selectors = getSelectors[item.type]($);
+      selectors.each(function () {
+        list.push({
           title: $(this).text(),
-          link: path.join(url, $(this).attr('href')),
+          link: new URL.URL($(this).attr('href'), myUrl.origin),
         });
       });
-      resolve(juejin);
+      resolve(list);
     })
   })
 }
+
+let getSelectors = {
+  juejin($) {
+    return $('a.title');
+  },
+
+  segmentfault($) {
+    return $('.news__item-title>a');
+  }
+}
+

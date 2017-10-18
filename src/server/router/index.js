@@ -3,18 +3,22 @@ const fetchUrl = require('../util/fetch_url');
 
 let router = new Router();
 
-function* index() {
-    yield this.render('index');
-}
+const baseUrls = [{
+    url: 'https://juejin.im',
+    type: 'juejin'
+}, {
+    url: 'https://segmentfault.com/news',
+    type: 'segmentfault'
+}]
 
-
-router.get('/juejin/', index);
-
-router.get('/api/juejin', function* juejin() {
-    let url = 'https://juejin.im';
-    let links = yield fetchUrl(url);
-    console.log(links);
-    this.body = links;
+router.get(/^(?!\/api\/)/, async (ctx) => {
+    await ctx.render('index');
 });
+
+baseUrls.forEach(item => {
+    router.get(`/api/${item.type}`, async (ctx) => {
+        ctx.body = await fetchUrl(item);
+    });
+})
 
 module.exports = router;
