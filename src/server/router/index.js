@@ -9,6 +9,9 @@ const baseUrls = [{
 }, {
     url: 'https://segmentfault.com/news',
     type: 'segmentfault'
+}, {
+    url: 'https://toutiao.io',
+    type: 'toutiao'
 }]
 
 router.get(/^(?!\/api\/)/, async (ctx) => {

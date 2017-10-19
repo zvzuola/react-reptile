@@ -29,6 +29,10 @@ let getSelectors = {
 
   segmentfault($) {
     return $('.news__item-title>a');
+  },
+
+  toutiao($) {
+    return $('.title>a');    
   }
 }
 

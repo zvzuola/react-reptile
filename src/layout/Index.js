@@ -4,27 +4,60 @@ import 'antd/dist/antd.css';
 import { Icon, Menu, Layout } from 'antd';
 import Juejin from '../apps/juejin';
 import Segmentfault from '../apps/segmentfault';
+import Toutiao from '../apps/toutiao';
 
 const { Sider, Content } = Layout;
 const MenuItem = Menu.Item;
+const menus = [
+  {
+    icon: 'tool',
+    to: '/juejin',
+    text: '掘金',
+    component: Juejin,
+  }, {
+    icon: 'tool',
+    to: '/segmentfault',
+    text: 'segmentfault',
+    component: Segmentfault,
+  }, {
+    icon: 'tool',
+    to: '/toutiao',
+    text: '开发者头条',
+    component: Toutiao,
+  },
+];
+const MenuContainer = () => {
+  const menuItems = menus.map(item => (
+    <MenuItem key={item.to}>
+      <Link to={item.to}><Icon className="icon" type={item.icon} />{item.text}</Link>
+    </MenuItem>
+  ));
+  return (
+    <Menu theme="dark">
+      {menuItems}
+    </Menu>
+  );
+};
+
+const RouteContainer = () => {
+  const routes = menus.map(item => (
+    <Route key={item.to} path={item.to} component={item.component} />
+  ));
+  return (
+    <Switch>
+      {routes}
+    </Switch>
+  );
+};
+
 const Index = () => (
   <Layout style={{ minHeight: '100vh' }}>
     <Sider>
-      <Menu theme="dark">
-        <MenuItem>
-          <Link to="/juejin"><Icon className="icon" type="tool" />掘金</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/segmentfault"><Icon className="icon" type="area-chart" />segmentfault</Link>
-        </MenuItem>
-      </Menu>
+      <MenuContainer />
     </Sider>
     <Layout>
       <Content>
-        <Switch>
-          <Route path="/juejin" component={Juejin} />
-          <Route path="/segmentfault" component={Segmentfault} />
-        </Switch>
+        <RouteContainer />
       </Content>
     </Layout>
   </Layout>
