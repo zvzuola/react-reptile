@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
+import { Spin } from 'antd';
 
 export default options => () => class Index extends Component {
   state = {
+    loading: true,
     list: [],
   }
   componentDidMount() {
     fetch(options.url)
       .then(response => response.json())
       .then((list) => {
-        this.setState({ list });
+        this.setState({ list, loading: false });
       });
   }
 
@@ -19,10 +21,8 @@ export default options => () => class Index extends Component {
   }
 
   render() {
-    return (
-      <ul>
-        {this.list()}
-      </ul>
-    );
+    return this.state.loading
+      ? <div style={{ textAlign: 'center' }}><Spin /></div>
+      : <div style={{ padding: '20px' }}><ul>{this.list()}</ul></div>;
   }
 };
