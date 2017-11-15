@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
-import { Icon, Menu, Layout } from 'antd';
+import { Icon, Menu, Layout, Button } from 'antd';
+import 'whatwg-fetch';
 import Juejin from '../apps/juejin';
 import Segmentfault from '../apps/segmentfault';
 import Toutiao from '../apps/toutiao';
@@ -50,6 +51,24 @@ const RouteContainer = () => {
   );
 };
 
+const create = () => {
+  fetch('/api/user/create', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: 'zv',
+      nick: 'zvzuola',
+      password: '666666',
+      gender: true,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    }),
+  })
+    .then(response => response.json())
+    .then((res) => {
+      console.log(res);
+    });
+};
+
 const Index = () => (
   <Layout style={{ minHeight: '100vh' }}>
     <Sider>
@@ -57,6 +76,7 @@ const Index = () => (
     </Sider>
     <Layout>
       <Content>
+        <Button onClick={create}>创建用户</Button>
         <RouteContainer />
       </Content>
     </Layout>
