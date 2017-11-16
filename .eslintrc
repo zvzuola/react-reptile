@@ -48,6 +48,8 @@
     ],
     "global-require": [
       1
-    ]
+    ],
+    "react/prop-types": [0],
+    "class-methods-use-this": "off"    
   }
 }

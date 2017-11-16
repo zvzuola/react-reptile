@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'whatwg-fetch';
 import { Spin } from 'antd';
 
 export default options => () => class Index extends Component {

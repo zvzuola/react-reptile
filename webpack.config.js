@@ -52,6 +52,9 @@ let config = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      fetch: ['whatwg-fetch', 'default'],
+    }),
     new HtmlWebpackPlugin({
       template: './index.html'
     }),
