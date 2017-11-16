@@ -9,6 +9,15 @@ class NormalLoginForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        fetch('/api/user/login', {
+          method: 'post',
+          body: JSON.stringify(values),
+          credentials: 'same-origin',
+        })
+          .then(response => response.json())
+          .then((res) => {
+            console.log(res);
+          });
       }
     });
   }

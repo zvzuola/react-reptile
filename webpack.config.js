@@ -11,7 +11,7 @@ const DEV = process.env.NODE_ENV !== 'production';
 let config = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    index: ['./index.js']
+    index: ['whatwg-fetch', './index.js']
   },
   output: {
     path: path.join(__dirname, 'public'),
@@ -52,9 +52,6 @@ let config = {
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      fetch: ['whatwg-fetch', 'default'],
-    }),
     new HtmlWebpackPlugin({
       template: './index.html'
     }),

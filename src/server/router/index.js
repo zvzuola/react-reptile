@@ -33,4 +33,16 @@ router.post('/api/user/create', async (ctx) => {
   ctx.body = await userController.create(JSON.parse(ctx.request.body));
 });
 
+router.post('/api/user/login', (ctx) => {
+  ctx.session = {
+    ...JSON.parse(ctx.request.body)
+  }
+  ctx.body = ctx.session;
+});
+
+router.get('/api/user/del', (ctx) => {
+  ctx.session = null;
+  ctx.body = '您已注销';
+})
+
 module.exports = router;
