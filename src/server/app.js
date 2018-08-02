@@ -31,10 +31,6 @@ appStatic.use(koaStatic(path.join(__dirname, '../../public'), {
   maxage: 0
 }));
 app.use(mount('/', appStatic))
-// 静态资源加载，为什么要采用上面那种mount方式？
-// app.use(koaStatic(path.join(__dirname, '../../public'), {
-//   maxage: 0
-// }));
 
 process.title = '';
 
@@ -49,13 +45,13 @@ ejs(app, {
 app.use(session({
   key: 'SESSION_ID',
   store,
-  // cookie: {                   // 与 cookie 相关的配置
-  //   domain: 'localhost',    // 写 cookie 所在的域名
-  //   path: '/',              // 写 cookie 所在的路径
-  //   maxAge: 1000 * 30,      // cookie 有效时长
-  //   httpOnly: true,         // 是否只用于 http 请求中获取
-  //   overwrite: false        // 是否允许重写
-  // }
+  cookie: {                   // 与 cookie 相关的配置
+    domain: 'localhost',    // 写 cookie 所在的域名
+    path: '/',              // 写 cookie 所在的路径
+    maxAge: 1000 * 300,      // cookie 有效时长
+    httpOnly: true,         // 是否只用于 http 请求中获取
+    overwrite: false        // 是否允许重写
+  }
 }));
 
 app.use(router.routes())
